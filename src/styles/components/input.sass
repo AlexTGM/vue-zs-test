@@ -1,0 +1,36 @@
+@import '../derived'
+
+$text-line-height: 24px
+$text-padding: 12px 14px 14px 14px
+
+.input
+    outline: none
+    border: solid 1px $border-color
+    border-radius: 6px
+    font-size: $text-medium
+    line-height: $text-line-height
+    padding: $text-padding
+
+    & + label.placeholder
+        position: absolute
+
+        background: $white
+
+        line-height: $text-line-height
+        padding: $text-padding
+        pointer-events: none
+        opacity: 0.5
+        
+        transition: 0.2s
+        transition-timing-function: ease
+        transition-timing-function: cubic-bezier(0.25, 0.1, 0.25, 1)
+   
+    &:focus
+        border: solid 1px $primary
+
+    &:focus + label, &:not(:placeholder-shown) + label
+        opacity: 1
+
+        font-size: $text-small
+        margin: -12px 0 0 14px
+        padding: 0

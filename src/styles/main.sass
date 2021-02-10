@@ -1,0 +1,32 @@
+@import '../node_modules/minireset.css/minireset.min.css'
+    
+@import './derived'
+@import './typography'
+
+@import './utils'
+
+@import './components/link'
+@import './components/button'
+@import './components/input'
+@import './components/box'
+
+html
+    width: 1024px
+    margin: 0 auto
+
+.control
+    display: flex
+    position: relative
+    
+    *
+        flex: 1
+
+    
+.box
+    margin: 0 auto
+    flex-flow: column
+    width: 407px
+    position: absolute
+    top: 50%
+    left: 50%
+    transform: translate(-50%, -50%)
