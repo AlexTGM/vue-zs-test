@@ -6,12 +6,14 @@ form.box.is-flex.p-t-40.p-b-40.p-l-50.p-r-50
         v-model='form.email',
         type='email',
         placeholder='E-mail или телефон',
+        :error='$v.form.email.$invalid'
     )
 
     m-text-input.m-b-20(
         v-model='form.password',
         type='password',
         placeholder='Пароль',
+        :error='$v.form.password.$invalid'
     )
 
     a.has-text-small.m-b-30(href='#') Забыли пароль?
@@ -23,6 +25,8 @@ form.box.is-flex.p-t-40.p-b-40.p-l-50.p-r-50
 
 <script>
 import mTextInput from 'components/text-input'
+
+import { required, email } from 'vuelidate/lib/validators'
 
 import { mapGetters, mapActions } from 'vuex'
 
@@ -38,11 +42,22 @@ export default {
         },
     }),
 
+    validations: {
+        form: {
+            email: { required, email },
+            password: { required },
+        },
+    },
+
     computed: mapGetters(['is_logged']),
 
     methods: {
         ...mapActions(['login']),
         async authorize() {
+            this.$v.form.$touch()
+
+            if (this.$v.form.$invalid) return
+
             await this.login(this.form)
 
             if (this.is_logged) {

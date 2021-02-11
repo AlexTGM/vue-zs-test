@@ -5,6 +5,7 @@
         autocomplete='nope',
         placeholder=' ',
         :value='computedValue',
+        :class="[ { 'is-error': error } ]"
         :type='newType',
         @input='onInput',
         @change='onChange'
@@ -30,6 +31,10 @@ export default {
         placeholder: {
             type: String,
             default: '',
+        },
+        error: {
+            type: Boolean,
+            default: false,
         },
     },
 
