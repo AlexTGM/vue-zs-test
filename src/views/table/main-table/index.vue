@@ -1,5 +1,10 @@
 <template lang="pug">
-div 
+div
+    .spinner(v-if="!itemsToDisplay.length")
+        span.spinner-inner-1
+        span.spinner-inner-2
+        span.spinner-inner-3
+
     table.table
         thead
             table-head-selected(
@@ -22,7 +27,7 @@ div
                 @select='item.selected = !item.selected'
             )
 
-    .level
+    .level.m-t-30(v-if="itemsToDisplay.length")
         div
         m-pagination(
             :params='table',
@@ -65,7 +70,7 @@ export default {
             this.itemsToDisplay.forEach((i) => {
                 i.selected = !atLeastOneSelected
             })
-        }
+        },
     },
 
     watch: {
