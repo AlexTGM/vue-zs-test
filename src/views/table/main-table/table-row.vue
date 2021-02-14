@@ -4,7 +4,7 @@ fragment
         td(@click='$emit("select")') X
         td {{ item.order_id }}
         td 
-            a +
+            a(@click="item.showDetails = !item.showDetails") +
             span {{ item.items.length | plural("товар") }}
         td {{ item.create_date | date("DD.MM.yyyy") }}
         td {{ item.status }}
@@ -16,7 +16,7 @@ fragment
         td {{ item.buyer }}
         td {{ item.shipping_method || "Почта России" }}
         td {{ item.currency_code | currency }}{{ item.total_price | formatNumber }}
-    tr
+    tr(v-if="item.showDetails")
         td(colspan=12)
             sub-table(:items="item.items")
 </template>

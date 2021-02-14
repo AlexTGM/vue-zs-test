@@ -69,6 +69,7 @@ export default {
                 this.itemsToDisplay = value.map((v) => ({
                     ...v,
                     selected: false,
+                    showDetails: false
                 }))
             },
         },
