@@ -13,7 +13,7 @@
 
     label.placeholder {{ placeholder }}
 
-    span(v-if='type === "password"', @click='togglePasswordVisibility')
+    span.icon(v-if='type === "password"', @click='togglePasswordVisibility')
         font-awesome-icon(size='lg', :icon='["fas", passwordVisibleIcon]')
 </template>
 
@@ -88,12 +88,3 @@ export default {
     },
 }
 </script>
-
-<style lang="sass" scoped>
-span
-    cursor: pointer
-    position: absolute
-    top: 50%
-    right: 15px
-    transform: translateY(-50%)
-</style>

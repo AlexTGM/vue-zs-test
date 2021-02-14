@@ -1,32 +1,13 @@
 @import '../node_modules/minireset.css/minireset.min.css'
-    
+
 @import './derived'
+@import './layout'
+@import './components'
 @import './typography'
 
 @import './utils'
-
-@import './components/link'
-@import './components/button'
-@import './components/input'
-@import './components/box'
 
 html
     width: 1220px
     margin: 0 auto
     background-color: #E5E5E5
-
-.control
-    display: flex
-    position: relative
-    
-    &.is-fullwidth
-        width: 100%
-
-.box
-    margin: 0 auto
-    flex-flow: column
-    width: 407px
-    position: absolute
-    top: 50%
-    left: 50%
-    transform: translate(-50%, -50%)

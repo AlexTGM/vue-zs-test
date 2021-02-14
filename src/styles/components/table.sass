@@ -1,0 +1,48 @@
+table.table
+    width: 100%
+
+thead
+    background-color: white
+
+    th
+        font-size: $text-small
+        padding: 20px
+        opacity: .5
+
+    th:nth-last-child(1)
+        border-radius: 0 6px 6px 0
+
+    th:nth-child(1)
+        border-radius: 6px 0 0 6px
+
+tbody
+    background-color: white
+
+    td
+        font-size: $text-small
+        padding: 20px
+
+    tr
+        border-bottom: 1px solid $border-color
+        margin: 0 20px
+
+    tr:nth-child(1)
+    td:nth-child(1)
+        border-radius: 6px 0 0 0
+
+    td:nth-last-child(1)
+        border-radius: 0 6px 0 0
+
+    tr:nth-last-child(1)
+    td:nth-child(1)
+        border-radius: 0 0 0 6px
+
+    td:nth-last-child(1)
+        border-radius: 0 0 6px 0
+
+    &:before
+        line-height: 10px
+        content: "."
+        background: #E5E5E5
+        color: transparent
+        display: block
