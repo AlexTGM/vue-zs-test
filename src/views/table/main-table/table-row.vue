@@ -3,7 +3,7 @@ fragment
     tr
         td
             m-checkbox(:value='item.selected', @input='$emit("select")')
-        td.is-narrow {{ item.order_id }}
+        td.is-narrow.is-link {{ item.order_id }}
         td.is-narrow
             a(@click='item.showDetails = !item.showDetails') {{ item.showDetails ? '-' : '+' }} 
             span {{ item.items.length | plural("товар") }}
