@@ -45,6 +45,17 @@ export default new Vuex.Store({
             state.next = data.next?.replace('/v1', '/api/v1')
             state.previous = data.previous?.replace('/v1', '/api/v1')
         },
+        RESET_DATA(state) {
+            state.items = []
+            state.count = 0
+        },
+        RESET_QUERY(state) {
+            state.items = []
+            state.count = 0
+            state.page = 0
+            state.next = ''
+            state.previous = ''
+        },
         UPDATE_PAGE(state, count) {
             state.page += count
         }
@@ -81,9 +92,11 @@ export default new Vuex.Store({
         },
         async fetchData({ commit, state }, query) {
             try {
+                commit('RESET_QUERY')
+
                 let url = `zonesmart/order/?limit=${state.limit}`
 
-                if (query) url += `&query=${query}`
+                if (query) url += `&search=${query}`
 
                 const response = await axios.get(url)
 
@@ -94,6 +107,8 @@ export default new Vuex.Store({
         },
         async getNext({ commit, state }) {
             try {
+                commit('RESET_DATA')
+
                 const response = await axios.get(state.next)
 
                 commit('UPDATE_PAGE', +1)
@@ -104,6 +119,8 @@ export default new Vuex.Store({
         },
         async getPrevious({ commit, state }) {
             try {
+                commit('RESET_DATA')
+
                 const response = await axios.get(state.previous)
 
                 commit('UPDATE_PAGE', -1)

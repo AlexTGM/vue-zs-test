@@ -19,10 +19,9 @@ div
                 :allSelected='allSelected'
                 @selectAll='selectAll',
             )
-        tbody
+        tbody(v-if="itemsToDisplay.length")
             table-row(
                 v-for='(item, index) in itemsToDisplay',
-                :key='index',
                 :item='item',
                 @select='item.selected = !item.selected'
             )
