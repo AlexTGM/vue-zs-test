@@ -6,14 +6,14 @@ form.box.is-flex.p-t-40.p-b-40.p-l-50.p-r-50
         v-model='form.email',
         type='email',
         placeholder='E-mail или телефон',
-        :error='$v.form.email.$invalid'
+        :error='$v.form.email.$dirty && $v.form.email.$invalid'
     )
 
     m-text-input.m-b-20(
         v-model='form.password',
         type='password',
         placeholder='Пароль',
-        :error='$v.form.password.$invalid'
+        :error='$v.form.password.$dirty && $v.form.password.$invalid'
     )
 
     span.has-text-small.is-danger.m-b-10(v-if='auth_failed')
