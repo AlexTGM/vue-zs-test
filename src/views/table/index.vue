@@ -17,42 +17,22 @@
             placeholder='Поиск'
         )
 
-    m-table(
-        :count='count',
-        :has_next='has_next',
-        :has_previous='has_previous',
-        @next='getNext',
-        @previous='getPrevious'
-    )
+    m-table(:params='table', @next='getNext', @previous='getPrevious')
         template(v-slot:head)
-            tr
-                th x
-                th ID
-                th Товары
-                th Дата заказа
-                th Статус
-                th Оплачено
-                th Отправлено
-                th Доставлено
-                th Канал продаж
-                th Покупатель
-                th Метод отправки
-                th Стоимость
+            table-head-selected(
+                v-if='selected.length',
+                @update='updateOrders(selected)',
+                @delete='deleteOrders(selected)',
+                @selectAll='selectAll'
+            )
+            table-head-static(v-else, @selectAll='selectAll')
         template(v-slot:row)
-            tr(v-for='item in items')
-                td X
-                td {{ item.order_id }}
-                td {{ item.items.length | plural("товар") }}
-                td {{ item.create_date | date("DD.MM.yyyy") }}
-                td {{ item.status }}
-                td {{ item.is_paid }}
-                td {{ item.is_shipped }}
-                td {{ item.is_delivered }}
-                td.is-lowercase.has-text-extra-small
-                    span.tag {{ item.marketplace_user_account.marketplace_name }}
-                td {{ item.buyer }}
-                td {{ item.shipping_method || "Почта России" }}
-                td {{ item.total_price }} {{ item.currency_code }}
+            table-row(
+                v-for='item in itemsToDisplay',
+                :item='item',
+                :key='item.order_id',
+                @select='item.selected = !item.selected'
+            )
 </template>
 
 <script>
@@ -60,33 +40,64 @@ import mTextInput from 'components/text-input'
 
 import mTable from 'components/table/table'
 
-import moment from 'moment'
+import tableHeadSelected from './table-head-selected'
+import tableHeadStatic from './table-head-static'
+import tableRow from './table-row'
+
 import { mapActions, mapGetters } from 'vuex'
 
 export default {
-    components: { mTextInput, mTable },
+    components: {
+        mTextInput,
+        mTable,
+        tableHeadSelected,
+        tableHeadStatic,
+        tableRow,
+    },
 
     data: () => ({
         query: null,
+        itemsToDisplay: [],
     }),
-
-    filters: {
-        plural: (count, word) => {
-            const base = `${count} ${word}`
-
-            if (count === 1) return base
-            else if (count >= 2 && count <= 4) return `${base}а`
-            else return `${base}ов`
-        },
-        date: (date, format) => moment(date).format(format),
-    },
 
     async created() {
         await this.fetchData()
     },
 
-    computed: mapGetters(['items', 'count', 'has_next', 'has_previous']),
+    computed: {
+        ...mapGetters(['table']),
+        selected() {
+            return this.itemsToDisplay
+                .filter((i) => i.selected)
+                .map((i) => i.order_id)
+        },
+    },
 
-    methods: mapActions(['fetchData', 'getNext', 'getPrevious']),
+    methods: {
+        ...mapActions([
+            'fetchData', 
+            'getNext', 
+            'getPrevious',
+            'updateOrders',
+            'deleteOrders'
+        ]),
+
+        selectAll(atLeastOneSelected = false) {
+            this.itemsToDisplay.forEach((i) => {
+                i.selected = !atLeastOneSelected
+            })
+        },
+    },
+
+    watch: {
+        'table.items': {
+            handler(value) {
+                this.itemsToDisplay = value.map((v) => ({
+                    ...v,
+                    selected: false,
+                }))
+            },
+        },
+    },
 }
 </script>

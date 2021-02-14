@@ -10,7 +10,7 @@ export default new Vuex.Store({
         access: localStorage.getItem('access') || '',
         refresh: localStorage.getItem('refresh') || '',
 
-        limit: 20,
+        limit: 10,
         items: [],
 
         count: 0,
@@ -111,18 +111,26 @@ export default new Vuex.Store({
             } catch (err) {
                 return console.log(err)
             }
+        },
+        updateOrders(_, orders) {
+            console.log(`Обновляю [${orders.join(',')}]`)
+        },
+        deleteOrders(_, orders) {
+            console.log(`Удаляю [${orders.join(',')}]`)
         }
     },
     getters: {
-        items: state => state.items,
-        count: state => state.count,
+        table: state => ({
+            items: state.items,
+            count: state.count,
 
-        from: state => state.page * state.limit,
-        to: state => (state.page + 1) * state.limit < state.count
-            ? (state.page + 1) * state.limit : state.count,
+            from: state.page * state.limit,
+            to: (state.page + 1) * state.limit < state.count
+                ? (state.page + 1) * state.limit : state.count,
 
-        has_next: state => !!state.next,
-        has_previous: state => !!state.previous,
+            has_next: !!state.next,
+            has_previous: !!state.previous,
+        }),
 
         auth_failed: state => state.auth_failed,
         access_token: state => state.access,
