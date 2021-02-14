@@ -1,10 +1,11 @@
 <template lang="pug">
 fragment
     tr
-        td(@click='$emit("select")') X
+        td
+            m-checkbox(v-model="item.selected")
         td {{ item.order_id }}
         td 
-            a(@click="item.showDetails = !item.showDetails") +
+            a(@click='item.showDetails = !item.showDetails') +
             span {{ item.items.length | plural("товар") }}
         td {{ item.create_date | date("DD.MM.yyyy") }}
         td {{ item.status }}
@@ -16,17 +17,20 @@ fragment
         td {{ item.buyer }}
         td {{ item.shipping_method || "Почта России" }}
         td {{ item.currency_code | currency }}{{ item.total_price | formatNumber }}
-    tr(v-if="item.showDetails")
+    tr(v-if='item.showDetails')
         td(colspan=12)
-            sub-table(:items="item.items")
+            sub-table(:items='item.items')
 </template>
 
 <script>
+import mCheckbox from 'components/checkbox'
+
 import subTable from '../sub-table'
 
 export default {
     components: {
-        subTable
+        mCheckbox,
+        subTable,
     },
 
     props: ['item'],

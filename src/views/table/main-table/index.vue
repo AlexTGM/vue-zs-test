@@ -4,11 +4,16 @@ div
         thead
             table-head-selected(
                 v-if='selected.length',
+                :allSelected='allSelected',
                 @update='$emit("update", selected)',
                 @delete='$emit("delete", selected)',
                 @selectAll='selectAll'
             )
-            table-head-static(v-else, @selectAll='selectAll')
+            table-head-static(
+                v-else,
+                :allSelected='allSelected'
+                @selectAll='selectAll',
+            )
         tbody
             table-row(
                 v-for='(item, index) in itemsToDisplay',
@@ -53,6 +58,9 @@ export default {
                 .filter((i) => i.selected)
                 .map((i) => i.order_id)
         },
+        allSelected() {
+            return this.itemsToDisplay.every((i) => i.selected)
+        },
     },
 
     methods: {
@@ -69,7 +77,7 @@ export default {
                 this.itemsToDisplay = value.map((v) => ({
                     ...v,
                     selected: false,
-                    showDetails: false
+                    showDetails: false,
                 }))
             },
         },
