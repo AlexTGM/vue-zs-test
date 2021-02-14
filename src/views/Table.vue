@@ -17,8 +17,14 @@
             placeholder='Поиск'
         )
 
-    table.table
-        thead
+    m-table(
+        :count='count',
+        :has_next='has_next',
+        :has_previous='has_previous',
+        @next='getNext',
+        @previous='getPrevious'
+    )
+        template(v-slot:head)
             tr
                 th x
                 th ID
@@ -32,7 +38,7 @@
                 th Покупатель
                 th Метод отправки
                 th Стоимость
-        tbody.has-text-small
+        template(v-slot:row)
             tr(v-for='item in items')
                 td X
                 td {{ item.order_id }}
@@ -43,20 +49,22 @@
                 td {{ item.is_shipped }}
                 td {{ item.is_delivered }}
                 td.is-lowercase.has-text-extra-small
-                  span.tag {{ item.marketplace_user_account.marketplace_name }}
+                    span.tag {{ item.marketplace_user_account.marketplace_name }}
                 td {{ item.buyer }}
-                td {{ item.shipping_method || 'Почта России' }}
+                td {{ item.shipping_method || "Почта России" }}
                 td {{ item.total_price }} {{ item.currency_code }}
 </template>
 
 <script>
 import mTextInput from 'components/text-input'
 
+import mTable from 'components/table/table'
+
 import moment from 'moment'
 import { mapActions, mapGetters } from 'vuex'
 
 export default {
-    components: { mTextInput },
+    components: { mTextInput, mTable },
 
     data: () => ({
         query: null,
@@ -77,8 +85,8 @@ export default {
         await this.fetchData()
     },
 
-    computed: mapGetters(['items']),
+    computed: mapGetters(['items', 'count', 'has_next', 'has_previous']),
 
-    methods: mapActions(['fetchData']),
+    methods: mapActions(['fetchData', 'getNext', 'getPrevious']),
 }
 </script>

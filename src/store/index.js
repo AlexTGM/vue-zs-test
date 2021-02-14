@@ -9,7 +9,16 @@ export default new Vuex.Store({
         auth_failed: '',
         access: localStorage.getItem('access') || '',
         refresh: localStorage.getItem('refresh') || '',
-        items: []
+
+        limit: 20,
+        items: [],
+
+        count: 0,
+
+        next: '',
+        previous: '',
+
+        page: 0
     },
     mutations: {
         AUTH_ACCESS_TOKEN(state, access) {
@@ -28,9 +37,17 @@ export default new Vuex.Store({
 
             state.refresh = refresh
         },
-        LOAD_ITEMS(state, items) {
-            state.items = items
+
+        LOAD_ITEMS(state, data) {
+            state.items = data.results
+            state.count = data.count
+
+            state.next = data.next?.replace('/v1', '/api/v1')
+            state.previous = data.previous?.replace('/v1', '/api/v1')
         },
+        UPDATE_PAGE(state, count) {
+            state.page += count
+        }
     },
     actions: {
         authFailed({ commit }) {
@@ -62,11 +79,35 @@ export default new Vuex.Store({
                 dispatch('authFailed')
             }
         },
-        async fetchData({ commit }) {
+        async fetchData({ commit, state }, query) {
             try {
-                const response = await axios.get('zonesmart/order/')
+                let url = `zonesmart/order/?limit=${state.limit}`
 
-                commit('LOAD_ITEMS', response.data.results)
+                if (query) url += `&query=${query}`
+
+                const response = await axios.get(url)
+
+                commit('LOAD_ITEMS', response.data)
+            } catch (err) {
+                return console.log(err)
+            }
+        },
+        async getNext({ commit, state }) {
+            try {
+                const response = await axios.get(state.next)
+
+                commit('UPDATE_PAGE', +1)
+                commit('LOAD_ITEMS', response.data)
+            } catch (err) {
+                return console.log(err)
+            }
+        },
+        async getPrevious({ commit, state }) {
+            try {
+                const response = await axios.get(state.previous)
+
+                commit('UPDATE_PAGE', -1)
+                commit('LOAD_ITEMS', response.data)
             } catch (err) {
                 return console.log(err)
             }
@@ -74,6 +115,14 @@ export default new Vuex.Store({
     },
     getters: {
         items: state => state.items,
+        count: state => state.count,
+
+        from: state => state.page * state.limit,
+        to: state => (state.page + 1) * state.limit < state.count
+            ? (state.page + 1) * state.limit : state.count,
+
+        has_next: state => !!state.next,
+        has_previous: state => !!state.previous,
 
         auth_failed: state => state.auth_failed,
         access_token: state => state.access,
