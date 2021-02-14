@@ -12,7 +12,7 @@ tr.is-opaque
     th.is-narrow Канал продаж
     th.is-narrow Покупатель
     th.is-narrow Метод отправки
-    th.is-narrow Стоимость
+    th.is-narrow.has-text-right Стоимость
 </template>
 
 <script>
