@@ -14,8 +14,8 @@ const routes = [
   },
   {
     path: '/',
-    name: 'About',
-    component: () => import(/* webpackChunkName: "about" */ '../views/About.vue'),
+    name: 'Table',
+    component: () => import(/* webpackChunkName: "table" */ '../views/Table.vue'),
     meta: {
       requires_auth: true
     }
@@ -30,7 +30,7 @@ const router = new VueRouter({
 
 router.beforeEach((to, from, next) => {
   if (to.matched.some(record => record.meta.requires_auth)) {
-    if (store.getters.is_logged) {
+    if (store.getters.access_token) {
       next()
       return
     }

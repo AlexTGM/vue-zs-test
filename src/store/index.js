@@ -9,6 +9,7 @@ export default new Vuex.Store({
         auth_failed: '',
         access: localStorage.getItem('access') || '',
         refresh: localStorage.getItem('refresh') || '',
+        items: []
     },
     mutations: {
         AUTH_ACCESS_TOKEN(state, access) {
@@ -27,6 +28,10 @@ export default new Vuex.Store({
 
             state.refresh = refresh
         },
+        LOAD_ITEMS(state, items) {
+            state.items = items
+        },
+    },
     actions: {
         authFailed({ commit }) {
             localStorage.removeItem('access')
@@ -57,8 +62,19 @@ export default new Vuex.Store({
                 dispatch('authFailed')
             }
         },
+        async fetchData({ commit }) {
+            try {
+                const response = await axios.get('zonesmart/order/')
+
+                commit('LOAD_ITEMS', response.data.results)
+            } catch (err) {
+                return console.log(err)
+            }
+        }
     },
     getters: {
+        items: state => state.items,
+
         auth_failed: state => state.auth_failed,
         access_token: state => state.access,
         refresh_token: state => state.refresh,
