@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Login from '../views/Login.vue'
+import Login from '../views/login'
 
 import store from '../store'
 
@@ -15,7 +15,7 @@ const routes = [
   {
     path: '/',
     name: 'Table',
-    component: () => import(/* webpackChunkName: "table" */ '../views/Table.vue'),
+    component: () => import('../views/table'),
     meta: {
       requires_auth: true
     }
