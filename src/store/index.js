@@ -6,67 +6,61 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
     state: {
-        status: '',
+        auth_failed: '',
         access: localStorage.getItem('access') || '',
         refresh: localStorage.getItem('refresh') || '',
     },
     mutations: {
-        AUTH_REQUEST(state) {
-            state.status = 'loading'
-        },
-        AUTH_SUCCESS(state, access, refresh) {
-            state.status = 'success'
+        AUTH_ACCESS_TOKEN(state, access) {
+            localStorage.setItem('access', access)
+
             state.access = access
-            state.refresh = refresh
+            state.auth_failed = false
         },
         AUTH_ERROR(state) {
-            state.status = 'error'
-        },
-        LOGOUT(state) {
-            state.status = ''
             state.access = ''
             state.refresh = ''
+            state.auth_failed = true
         },
-    },
+        AUTH_REFRESH_TOKEN(state, refresh) {
+            localStorage.setItem('refresh', refresh)
+
+            state.refresh = refresh
+        },
     actions: {
-        clearStorage() {
+        authFailed({ commit }) {
             localStorage.removeItem('access')
             localStorage.removeItem('refresh')
+
+            commit('AUTH_ERROR')
+        },
+        async refresh({ commit, dispatch, getters }) {
+            try {
+                const response = await axios.post('auth/jwt/refresh/', {
+                    refresh: getters.refresh_token
+                })
+
+                commit('AUTH_ACCESS_TOKEN', response.data.access)
+            } catch (err) {
+                dispatch('authFailed')
+            }
         },
         async login({ commit, dispatch }, user) {
-            commit('AUTH_REQUEST')
-
             try {
                 const response = await axios.post('auth/jwt/create/', user)
 
                 const { access, refresh } = response.data
 
-                localStorage.setItem('access', access)
-                localStorage.setItem('refresh', refresh)
-
-                commit('AUTH_SUCCESS', access, refresh)
-
-                axios.defaults.headers.common['Authorization'] = `JWT ${access}`
+                commit('AUTH_ACCESS_TOKEN', access)
+                commit('AUTH_REFRESH_TOKEN', refresh)
             } catch (err) {
-                commit('AUTH_ERROR')
-                dispatch('clearStorage')
-
-                return console.log(err)
+                dispatch('authFailed')
             }
         },
-        logout({ commit, dispatch }) {
-            commit('LOGOUT')
-
-            dispatch('clearStorage')
-
-            delete axios.defaults.headers.common['Authorization']
-        },
-        fetchData(/* { commit }, query */) {
-
-        }
     },
     getters: {
-        is_logged: state => !!state.access,
-        auth_status: state => state.status,
+        auth_failed: state => state.auth_failed,
+        access_token: state => state.access,
+        refresh_token: state => state.refresh,
     }
 })

@@ -16,6 +16,9 @@ form.box.is-flex.p-t-40.p-b-40.p-l-50.p-r-50
         :error='$v.form.password.$invalid'
     )
 
+    span.has-text-small.is-danger.m-b-10(v-if='auth_failed')
+        | Введенные данные некорректны
+
     a.has-text-small.m-b-30(href='#') Забыли пароль?
 
     button.button.m-b-20(@click.prevent='authorize') Войти
@@ -49,10 +52,11 @@ export default {
         },
     },
 
-    computed: mapGetters(['is_logged']),
+    computed: mapGetters(['auth_failed']),
 
     methods: {
         ...mapActions(['login']),
+        
         async authorize() {
             this.$v.form.$touch()
 
@@ -60,11 +64,8 @@ export default {
 
             await this.login(this.form)
 
-            if (this.is_logged) {
+            if (!this.auth_failed)
                 this.$router.push('/')
-            } else {
-                console.log('Something went wrong')
-            }
         },
     },
 }
