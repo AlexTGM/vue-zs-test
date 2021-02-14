@@ -12,7 +12,7 @@ tr
         span.tag {{ item.marketplace_user_account.marketplace_name }}
     td {{ item.buyer }}
     td {{ item.shipping_method || "Почта России" }}
-    td {{ item.currency_code }} {{ item.total_price }} 
+    td {{ item.currency_code | currency }} {{ item.total_price }} 
 </template>
 
 <script>
