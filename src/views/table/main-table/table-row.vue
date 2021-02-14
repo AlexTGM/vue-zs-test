@@ -3,11 +3,12 @@ fragment
     tr
         td
             m-checkbox(:value='item.selected', @input='$emit("select")')
-        td {{ item.order_id }}
-        td 
-            a(@click='item.showDetails = !item.showDetails') +
+        td.is-narrow {{ item.order_id }}
+        td.is-narrow
+            a(@click='item.showDetails = !item.showDetails') {{ item.showDetails ? '-' : '+' }} 
             span {{ item.items.length | plural("товар") }}
         td {{ item.create_date | date("DD.MM.yyyy") }}
+        td {{ item.status || 'Нет статуса' }}
         td.icon
             checkmark(:value="item.is_paid")
         td.icon

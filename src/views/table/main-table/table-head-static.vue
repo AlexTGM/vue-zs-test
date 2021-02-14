@@ -1,18 +1,18 @@
 <template lang="pug">
 tr.is-opaque
-    th(@click='$emit("selectAll")') 
+    th.is-narrow(@click='$emit("selectAll")') 
         m-checkbox(:value='allSelected')
     th ID
     th Товары
-    th Дата заказа
-    th Статус
-    th Оплачено
-    th Отправлено
-    th Доставлено
-    th Канал продаж
-    th Покупатель
-    th Метод отправки
-    th Стоимость
+    th.is-narrow Дата заказа
+    th.is-narrow Статус
+    th.is-narrow Оплачено
+    th.is-narrow Отправлено
+    th.is-narrow Доставлено
+    th.is-narrow Канал продаж
+    th.is-narrow Покупатель
+    th.is-narrow Метод отправки
+    th.is-narrow Стоимость
 </template>
 
 <script>
