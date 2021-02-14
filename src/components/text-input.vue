@@ -5,7 +5,7 @@
         autocomplete='nope',
         placeholder=' ',
         :value='computedValue',
-        :class="[ { 'is-error': error } ]"
+        :class='[{ "is-error": error }]',
         :type='newType',
         @input='onInput',
         @change='onChange'
@@ -13,7 +13,10 @@
 
     label.placeholder {{ placeholder }}
 
-    span.icon(v-if='type === "password"', @click='togglePasswordVisibility')
+    span.icon(v-if="icon", @click="$emit('iconClicked')")
+        font-awesome-icon(size='lg', :icon='["fas", icon]')
+
+    span.icon(v-if='!icon && type === "password"', @click='togglePasswordVisibility')
         font-awesome-icon(size='lg', :icon='["fas", passwordVisibleIcon]')
 </template>
 
@@ -35,6 +38,9 @@ export default {
         error: {
             type: Boolean,
             default: false,
+        },
+        icon: {
+            type: String,
         },
     },
 
