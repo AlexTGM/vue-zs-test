@@ -1,16 +1,20 @@
 <template lang="pug">
 div
-    a(@click='$emit("previous")', :disabled='!has_previous') previous
-    span {{ from }} - {{ to }} из {{ count }}
-    a(@click='$emit("next")', :disabled='!has_next') next
+    a.is-primary.m-r-10(
+        @click='$emit("previous")',
+        :class='{ disabled: !params.has_previous }'
+    ) <-
+
+    span.is-opaque {{ params.from }} - {{ params.to }} из {{ params.count }}
+
+    a.is-primary.m-l-10(
+        @click='$emit("next")',
+        :class='{ disabled: !params.has_next }'
+    ) ->
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
-
 export default {
-    computed: {
-        ...mapGetters(['has_previous', 'has_next', 'count', 'from', 'to']),
-    },
+    props: ['params'],
 }
 </script>
