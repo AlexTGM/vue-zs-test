@@ -14,7 +14,9 @@
         m-text-input.is-fullwidth(
             v-model='query',
             type='text',
-            placeholder='Поиск'
+            placeholder='Поиск',
+            icon='search',
+            @iconClicked='fetchData(query)'
         )
 
     main-table(
@@ -47,18 +49,14 @@ export default {
         await this.fetchData()
     },
 
-    computed: {
-        ...mapGetters(['table']),
-    },
+    computed: mapGetters(['table']),
 
-    methods: {
-        ...mapActions([
-            'fetchData',
-            'getNext',
-            'getPrevious',
-            'updateOrders',
-            'deleteOrders',
-        ]),
-    },
+    methods: mapActions([
+        'fetchData',
+        'getNext',
+        'getPrevious',
+        'updateOrders',
+        'deleteOrders',
+    ]),
 }
 </script>
