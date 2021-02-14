@@ -1,7 +1,7 @@
 <template lang="pug">
 tr
     th(@click='$emit("selectAll", true)') 
-        m-checkbox(v-model='allSelected')
+        m-checkbox(:value='allSelected')
     th(colspan='11', style='text-align: left')
         a.m-r-10(@click='$emit("update")') Обновить
         a(@click='$emit("delete")') Удалить

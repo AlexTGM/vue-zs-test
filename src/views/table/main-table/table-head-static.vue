@@ -1,7 +1,7 @@
 <template lang="pug">
-tr
+tr.is-opaque
     th(@click='$emit("selectAll")') 
-        m-checkbox(v-model='allSelected')
+        m-checkbox(:value='allSelected')
     th ID
     th Товары
     th Дата заказа

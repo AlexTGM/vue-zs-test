@@ -1,6 +1,6 @@
 <template lang="pug">
 label.checkbox
-    input(type='checkbox', v-model='internal', @change="$emit('input', $event.target.value)")
+    input(type='checkbox', v-model='internal', @change="$emit('input', !internal)")
     span.checkmark
 </template>
 
@@ -11,6 +11,10 @@ export default {
     data: () => ({
         internal: false,
     }),
+
+    created() {
+        this.internal = this.value
+    },
 
     watch: {
         value(value) {

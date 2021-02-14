@@ -2,7 +2,7 @@
 fragment
     tr
         td
-            m-checkbox(v-model="item.selected")
+            m-checkbox(:value='item.selected', @input='$emit("select")')
         td {{ item.order_id }}
         td 
             a(@click='item.showDetails = !item.showDetails') +
