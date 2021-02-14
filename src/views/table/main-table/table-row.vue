@@ -8,11 +8,13 @@ fragment
             a(@click='item.showDetails = !item.showDetails') +
             span {{ item.items.length | plural("товар") }}
         td {{ item.create_date | date("DD.MM.yyyy") }}
-        td {{ item.status }}
-        td {{ item.is_paid }}
-        td {{ item.is_shipped }}
-        td {{ item.is_delivered }}
-        td.is-lowercase.has-text-extra-small
+        td.icon
+            checkmark(:value="item.is_paid")
+        td.icon
+            checkmark(:value="item.is_shipped")
+        td.icon
+            checkmark(:value="item.is_delivered")
+        td.icon.is-lowercase.has-text-extra-small
             span.tag {{ item.marketplace_user_account.marketplace_name }}
         td {{ item.buyer }}
         td {{ item.shipping_method || "Почта России" }}
@@ -25,12 +27,14 @@ fragment
 <script>
 import mCheckbox from 'components/checkbox'
 
+import checkmark from './checkmark'
 import subTable from '../sub-table'
 
 export default {
     components: {
         mCheckbox,
         subTable,
+        checkmark
     },
 
     props: ['item'],
