@@ -1,6 +1,7 @@
 import Vue from 'vue'
 
 import moment from 'moment'
+import numeral from 'numeral'
 
 Vue.filter('plural', (count, word) => {
     const base = `${count} ${word}`
@@ -13,3 +14,5 @@ Vue.filter('plural', (count, word) => {
 Vue.filter('date', (date, format) => moment(date).format(format))
 
 Vue.filter('currency', code => code === 'USD' ? '$' : code)
+
+Vue.filter("formatNumber", value => numeral(value).format("0.00"))

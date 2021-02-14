@@ -17,47 +17,30 @@
             placeholder='Поиск'
         )
 
-    m-table(:params='table', @next='getNext', @previous='getPrevious')
-        template(v-slot:head)
-            table-head-selected(
-                v-if='selected.length',
-                @update='updateOrders(selected)',
-                @delete='deleteOrders(selected)',
-                @selectAll='selectAll'
-            )
-            table-head-static(v-else, @selectAll='selectAll')
-        template(v-slot:row)
-            table-row(
-                v-for='item in itemsToDisplay',
-                :item='item',
-                :key='item.order_id',
-                @select='item.selected = !item.selected'
-            )
+    main-table(
+        :table='table',
+        @next='getNext',
+        @previous='getPrevious',
+        @update='updateOrders($event)',
+        @delete='deleteOrders($event)'
+    )
 </template>
 
 <script>
 import mTextInput from 'components/text-input'
 
-import mTable from 'components/table/table'
-
-import tableHeadSelected from './table-head-selected'
-import tableHeadStatic from './table-head-static'
-import tableRow from './table-row'
+import mainTable from './main-table'
 
 import { mapActions, mapGetters } from 'vuex'
 
 export default {
     components: {
         mTextInput,
-        mTable,
-        tableHeadSelected,
-        tableHeadStatic,
-        tableRow,
+        mainTable,
     },
 
     data: () => ({
         query: null,
-        itemsToDisplay: [],
     }),
 
     async created() {
@@ -66,38 +49,16 @@ export default {
 
     computed: {
         ...mapGetters(['table']),
-        selected() {
-            return this.itemsToDisplay
-                .filter((i) => i.selected)
-                .map((i) => i.order_id)
-        },
     },
 
     methods: {
         ...mapActions([
-            'fetchData', 
-            'getNext', 
+            'fetchData',
+            'getNext',
             'getPrevious',
             'updateOrders',
-            'deleteOrders'
+            'deleteOrders',
         ]),
-
-        selectAll(atLeastOneSelected = false) {
-            this.itemsToDisplay.forEach((i) => {
-                i.selected = !atLeastOneSelected
-            })
-        },
-    },
-
-    watch: {
-        'table.items': {
-            handler(value) {
-                this.itemsToDisplay = value.map((v) => ({
-                    ...v,
-                    selected: false,
-                }))
-            },
-        },
     },
 }
 </script>
