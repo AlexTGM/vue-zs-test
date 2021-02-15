@@ -1,32 +1,28 @@
 <template lang="pug">
 div
-    .spinner(v-if="!itemsToDisplay.length")
+    .spinner(v-if='!itemsToDisplay.length')
         span.spinner-inner-1
         span.spinner-inner-2
         span.spinner-inner-3
 
     table.table
         thead
-            table-head-selected(
-                v-if='selected.length',
+            table-head(
+                :selectedLength='selected.length',
                 :allSelected='allSelected',
                 @update='$emit("update", selected)',
                 @delete='$emit("delete", selected)',
                 @selectAll='selectAll'
             )
-            table-head-static(
-                v-else,
-                :allSelected='allSelected'
-                @selectAll='selectAll',
-            )
+
         tbody(v-if="itemsToDisplay.length")
             table-row(
-                v-for='(item, index) in itemsToDisplay',
+                v-for='item in itemsToDisplay',
                 :item='item',
                 @select='item.selected = !item.selected'
             )
 
-    .level.m-t-30(v-if="itemsToDisplay.length")
+    .level.m-t-30(v-if='itemsToDisplay.length')
         div
         m-pagination(
             :params='table',
@@ -38,15 +34,13 @@ div
 <script>
 import mPagination from 'components/pagination'
 
-import tableHeadSelected from './table-head-selected'
-import tableHeadStatic from './table-head-static'
+import tableHead from './table-head'
 import tableRow from './table-row'
 
 export default {
     components: {
         mPagination,
-        tableHeadSelected,
-        tableHeadStatic,
+        tableHead,
         tableRow,
     },
 
@@ -63,9 +57,11 @@ export default {
                 .map((i) => i.order_id)
         },
         allSelected() {
-            return this.itemsToDisplay.length && 
+            return (
+                this.itemsToDisplay.length &&
                 this.itemsToDisplay.every((i) => i.selected)
-        }
+            )
+        },
     },
 
     methods: {
