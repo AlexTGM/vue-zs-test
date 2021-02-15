@@ -18,7 +18,7 @@ div
         tbody(v-if="itemsToDisplay.length")
             table-row(
                 v-for='item in itemsToDisplay',
-                :item='item',
+                :item='item', :key="item.order_id"
                 @select='item.selected = !item.selected'
             )
 

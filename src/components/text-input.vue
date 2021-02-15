@@ -14,10 +14,10 @@
     label.placeholder {{ placeholder }}
 
     span.icon(v-if="icon", @click="$emit('iconClicked')")
-        font-awesome-icon(size='lg', :icon='["fas", icon]')
+        i.fas.fa-lg(:class="icon")
 
     span.icon(v-if='!icon && type === "password"', @click='togglePasswordVisibility')
-        font-awesome-icon(size='lg', :icon='["fas", passwordVisibleIcon]')
+        i.fas.fa-lg(:class="passwordVisibleIcon")
 </template>
 
 <script>
@@ -64,7 +64,7 @@ export default {
         },
 
         passwordVisibleIcon() {
-            return !this.isPasswordVisible ? 'eye' : 'eye-slash'
+            return !this.isPasswordVisible ? 'fa-eye' : 'fa-eye-slash'
         },
     },
 

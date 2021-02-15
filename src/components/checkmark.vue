@@ -1,5 +1,5 @@
 <template lang="pug">
-font-awesome-icon(:icon='icon', size='lg', class="is-primary")
+i.fa-lg.is-primary(:class="icon")
 </template>
 
 <script>
@@ -11,8 +11,8 @@ export default {
     }),
 
     created() {
-        if (!this.value) this.icon = ['far', 'circle']
-        else this.icon = ['fas', 'check-circle']
+        if (!this.value) this.icon = ['far', 'fa-circle']
+        else this.icon = ['fas', 'fa-check-circle']
     },
 }
 </script>

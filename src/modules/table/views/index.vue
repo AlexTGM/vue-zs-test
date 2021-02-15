@@ -15,7 +15,7 @@
             v-model='query',
             type='text',
             placeholder='Поиск',
-            icon='search',
+            icon='fa-search',
             @iconClicked='fetchData(query)'
         )
 
