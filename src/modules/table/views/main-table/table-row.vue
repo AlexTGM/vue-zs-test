@@ -6,16 +6,16 @@ fragment
         td.is-narrow.is-link {{ item.order_id }}
         td.is-narrow
             a(@click='item.showDetails = !item.showDetails')
-                span {{ item.showDetails ? '-' : '+' }} 
+                span {{ item.showDetails ? "-" : "+" }}
                 span {{ item.items.length | plural("товар") }}
         td {{ item.create_date | date("DD.MM.yyyy") }}
-        td {{ item.status || 'Нет статуса' }}
+        td {{ item.status || "Нет статуса" }}
         td.icon
-            checkmark(:value="item.is_paid")
+            m-checkmark(:value='item.is_paid')
         td.icon
-            checkmark(:value="item.is_shipped")
+            m-checkmark(:value='item.is_shipped')
         td.icon
-            checkmark(:value="item.is_delivered")
+            m-checkmark(:value='item.is_delivered')
         td.icon.is-lowercase.has-text-extra-small
             span.tag {{ item.marketplace_user_account.marketplace_name }}
         td {{ item.buyer }}
@@ -28,15 +28,15 @@ fragment
 
 <script>
 import mCheckbox from 'components/checkbox'
+import mCheckmark from 'components/checkmark'
 
-import checkmark from './checkmark'
 import subTable from '../sub-table'
 
 export default {
     components: {
         mCheckbox,
+        mCheckmark,
         subTable,
-        checkmark
     },
 
     props: ['item'],
