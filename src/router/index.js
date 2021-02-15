@@ -1,25 +1,16 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Login from '../views/login'
 
 import store from '../store'
+
+import { routes as authRoutes } from '../modules/auth'
+import { routes as tableRoutes } from '../modules/table'
 
 Vue.use(VueRouter)
 
 const routes = [
-  {
-    path: '/login',
-    name: 'Login',
-    component: Login
-  },
-  {
-    path: '/',
-    name: 'Table',
-    component: () => import('../views/table'),
-    meta: {
-      requires_auth: true
-    }
-  }
+  ...authRoutes,
+  ...tableRoutes
 ]
 
 const router = new VueRouter({
